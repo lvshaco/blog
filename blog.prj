@@ -1,0 +1,45 @@
+blog=~/blog CD=. filter="*.md" {
+ source=source/_posts {
+  cocos2dx中的坑.md
+  hello-world.md
+  lua中的_ENV.md
+  入坑size_t不同平台大小不一.md
+ }
+ themes=themes filter="*"{
+  nadymainjade=nadymainjade {
+   README.md
+   _config.yml
+   layout=layout {
+    archive.jade
+    category.jade
+    index.jade
+    post.jade
+    tag.jade
+    _inc=_inc {
+     content-nav.jade
+     footer.jade
+     head.jade
+     header.jade
+     layout.jade
+     pagination.jade
+    }
+   }
+   source=source {
+    css=css {
+     _archive.styl
+     _base.styl
+     _footer.styl
+     _header.styl
+     _post.styl
+     _syntax.styl
+     _variable.styl
+     style.styl
+    }
+    img=img {
+     favicon.png
+     logo.png
+    }
+   }
+  }
+ }
+}
