@@ -16,10 +16,10 @@ block main
 
 
         if page.link
-            h2.article-title
+            h3.article-title
                 a(href=url_for(page.link) target="_blank")= page.title || 'No Title'
         else
-            h2.article-title
+            h3.article-title
                 a(href=url_for(page.path))= page.title || 'No Title'
                 
         div.content

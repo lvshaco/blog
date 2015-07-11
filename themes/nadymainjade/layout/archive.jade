@@ -18,15 +18,15 @@ block main
             p.archive-title Sitemap
                         
             aside
-                h2 Categories
+                h3 Categories
                 != list_categories({ show_count: false })
                 
             aside
-                h2 Tags
+                h3 Tags
                 != list_tags({ show_count: false })
                 
             aside
-                h2 Archives
+                h3 Archives
                 != list_archives({ show_count: false })
 
     else

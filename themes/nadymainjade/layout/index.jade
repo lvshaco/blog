@@ -20,44 +20,45 @@ block main
             - $i = 0
             - page.posts.each(function(post){
                 - $i++
-                if $i == 1 && is_current(path, true )
+                //
+                    if $i == 1 && is_current(path, true )
 
-                    li.first-li
+                        li.first-li
 
-                        if post.link
-                            time(datetime=date_xml(post.date))
-                               = date(post.date)
-                            h3.list-title
-                                a(href=url_for(post.link) target="_blank")= post.title || 'No Title'
+                            if post.link
+                                time(datetime=date_xml(post.date))
+                                   = date(post.date)
+                                h3.list-title
+                                    a(href=url_for(post.link) target="_blank")= post.title || 'No Title'
 
-                        else
-                            time(datetime=date_xml(post.date))
-                                = date(post.date)
-                            h3.list-title
-                                a(href=url_for(post.path))= post.title || 'No Title'
-                        if post.description
-                            p.archive-desc
-                                =  post.description
-                else
+                            else
+                                time(datetime=date_xml(post.date))
+                                    = date(post.date)
+                                h3.list-title
+                                    a(href=url_for(post.path))= post.title || 'No Title'
+                            if post.description
+                                p.archive-desc
+                                    =  post.description
+                    else
                 
-                    li
+                li
 
-                        if post.link
-                            time(datetime=date_xml(post.date))
-                               = date(post.date)
-                            h3.list-title
-                                a(href=url_for(post.link) target="_blank")= post.title || 'No Title'
+                    if post.link
+                        time(datetime=date_xml(post.date))
+                           = date(post.date)
+                        h3.list-title
+                            a(href=url_for(post.link) target="_blank")= post.title || 'No Title'
 
-                        else
-                            time(datetime=date_xml(post.date))
-                                = date(post.date)
-                            h3.list-title
-                                a(href=url_for(post.path))= post.title || 'No Title'
-                                
-                        if post.description
-                            p.archive-desc
-                                =  post.description
-                
+                    else
+                        time(datetime=date_xml(post.date))
+                            = date(post.date)
+                        h3.list-title
+                            a(href=url_for(post.path))= post.title || 'No Title'
+                            
+                    if post.description
+                        p.archive-desc
+                            =  post.description
+            
                             
             - })
             

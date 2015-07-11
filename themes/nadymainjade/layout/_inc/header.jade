@@ -1,14 +1,15 @@
 header.site-header
-
-    if theme.logo
-        img(src=theme.root + theme.logo alt="")
-    
-    h1
-        a(href=url_for())=theme.title
-    
-    if config.subtitle
-        p
-            = config.subtitle
+    nav
+        ul
+            li
+                if theme.logo
+                    img(src=theme.root + theme.logo alt="")
+            li
+                != theme.title
+                //a(href=url_for())=theme.title
+            li
+                if config.subtitle
+                    != config.subtitle
 
     nav
         ul 
