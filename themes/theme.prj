@@ -1,0 +1,142 @@
+theme=/Users/lvshaco/blog/themes CD=. filter="*" {
+ cscope.files
+ tags
+ landscape=landscape {
+  Gruntfile.js
+  LICENSE
+  README.md
+  _config.yml
+  package.json
+  layout=layout {
+   archive.ejs
+   category.ejs
+   index.ejs
+   layout.ejs
+   page.ejs
+   post.ejs
+   tag.ejs
+   _partial=_partial {
+    after-footer.ejs
+    archive-post.ejs
+    archive.ejs
+    article.ejs
+    footer.ejs
+    google-analytics.ejs
+    head.ejs
+    header.ejs
+    mobile-nav.ejs
+    sidebar.ejs
+    post=post {
+     category.ejs
+     date.ejs
+     gallery.ejs
+     nav.ejs
+     tag.ejs
+     title.ejs
+    }
+   }
+   _widget=_widget {
+    archive.ejs
+    category.ejs
+    recent_posts.ejs
+    tag.ejs
+    tagcloud.ejs
+   }
+  }
+  scripts=scripts {
+   fancybox.js
+  }
+  source=source {
+   css=css {
+    _extend.styl
+    _variables.styl
+    style.styl
+    _partial=_partial {
+     archive.styl
+     article.styl
+     comment.styl
+     footer.styl
+     header.styl
+     highlight.styl
+     mobile.styl
+     sidebar-aside.styl
+     sidebar-bottom.styl
+     sidebar.styl
+    }
+    _util=_util {
+     grid.styl
+     mixin.styl
+    }
+    fonts=fonts {
+     FontAwesome.otf
+     fontawesome-webfont.eot
+     fontawesome-webfont.svg
+     fontawesome-webfont.ttf
+     fontawesome-webfont.woff
+    }
+    images=images {
+     banner.jpg
+    }
+   }
+   fancybox=fancybox {
+    blank.gif
+    fancybox_loading.gif
+    fancybox_loading
+    2x.gif
+    fancybox_overlay.png
+    fancybox_sprite.png
+    fancybox_sprite
+    2x.png
+    jquery.fancybox.css
+    jquery.fancybox.js
+    jquery.fancybox.pack.js
+    helpers=helpers {
+     fancybox_buttons.png
+     jquery.fancybox-buttons.css
+     jquery.fancybox-buttons.js
+     jquery.fancybox-media.js
+     jquery.fancybox-thumbs.css
+     jquery.fancybox-thumbs.js
+    }
+   }
+   js=js {
+    script.js
+   }
+  }
+ }
+ nadymainjade=nadymainjade {
+  README.md
+  _config.yml
+  layout=layout {
+   archive.jade
+   category.jade
+   index.jade
+   post.jade
+   tag.jade
+   _inc=_inc {
+    content-nav.jade
+    footer.jade
+    head.jade
+    header.jade
+    layout.jade
+    pagination.jade
+   }
+  }
+  source=source {
+   css=css {
+    _archive.styl
+    _base.styl
+    _footer.styl
+    _header.styl
+    _post.styl
+    _syntax.styl
+    _variable.styl
+    style.styl
+   }
+   img=img {
+    favicon.png
+    logo.png
+   }
+  }
+ }
+}
