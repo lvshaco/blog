@@ -1,10 +1,10 @@
 # Hexo Configuration
-## Docs: http://hexo.io/docs/configuration.html
+## Docs: https://hexo.io/docs/configuration.html
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
 title: lvshaco
-subtitle: 热爱生活，热爱编程
+subtitle: 程序员与游戏
 description:
 author: lvshaco
 language:
@@ -40,7 +40,7 @@ future: true
 highlight:
   enable: true
   line_number: true
-  auto_detect: true
+  auto_detect: false
   tab_replace:
 
 # Category & Tag
@@ -61,13 +61,12 @@ per_page: 10
 pagination_dir: page
 
 # Extensions
-## Plugins: http://hexo.io/plugins/
-## Themes: http://hexo.io/themes/
-#theme: landscape
-theme: nadymainjade
+## Plugins: https://hexo.io/plugins/
+## Themes: https://hexo.io/themes/
+theme: bootstrap-blog
 
 # Deployment
-## Docs: http://hexo.io/docs/deployment.html
+## Docs: https://hexo.io/docs/deployment.html
 deploy:
   type: git
   repository: git@github.com:lvshaco/lvshaco.github.io.git
