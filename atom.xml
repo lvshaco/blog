@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title><![CDATA[LvShaco Blog]]></title>
+  <subtitle><![CDATA[程序员与游戏]]></subtitle>
+  <link href="/atom.xml" rel="self"/>
+  <link href="http://lvshaco.github.io/"/>
+  <updated>2016-01-23T08:47:06.000Z</updated>
+  <id>http://lvshaco.github.io/</id>
+  
+  <author>
+    <name><![CDATA[lvshaco]]></name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[Hello World]]></title>
+    <link href="http://lvshaco.github.io/2016/01/23/hello-world/"/>
+    <id>http://lvshaco.github.io/2016/01/23/hello-world/</id>
+    <published>2016-01-23T08:47:06.000Z</published>
+    <updated>2016-01-23T08:47:06.000Z</updated>
+    <content type="html"><![CDATA[<p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<h3 id="Run_server">Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h3 id="Generate_static_files">Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[this is description]]>
+    
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[vim清扫]]></title>
+    <link href="http://lvshaco.github.io/2015/07/17/vim%E6%B8%85%E6%89%AB/"/>
+    <id>http://lvshaco.github.io/2015/07/17/vim清扫/</id>
+    <published>2015-07-17T07:08:15.000Z</published>
+    <updated>2015-07-17T07:08:15.000Z</updated>
+    <content type="html"><![CDATA[<p>今天把vim的插件都清理掉了，干干净净^_^</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>今天把vim的插件都清理掉了，干干净净^_^</p>
+]]>
+    </summary>
+    
+      <category term="vim" scheme="http://lvshaco.github.io/tags/vim/"/>
+    
+      <category term="tool" scheme="http://lvshaco.github.io/categories/tool/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[cocos2dx中的坑]]></title>
+    <link href="http://lvshaco.github.io/2015/07/10/cocos2dx%E4%B8%AD%E7%9A%84%E5%9D%91/"/>
+    <id>http://lvshaco.github.io/2015/07/10/cocos2dx中的坑/</id>
+    <published>2015-07-10T12:53:11.000Z</published>
+    <updated>2015-07-10T12:53:11.000Z</updated>
+    <content type="html"><![CDATA[<h4 id="1-_tmx地块图片文件支持相对路径，但是却没有对-,-此类相对路径符号过滤处理，导致后面android中打开资源失败。">1. tmx地块图片文件支持相对路径，但是却没有对..,.此类相对路径符号过滤处理，导致后面android中打开资源失败。</h4><blockquote>
+<p>注意 AAssetManager_open中打开的文件必须是相对于assets的绝对路径，不能包含..，.符号，AAssetManager_open内部实现会在此路径前附加assets/，并且使用字符串完全匹配，即使是/改为\也跪。</p>
+</blockquote>
+<p>代码：CTMXXMLParser.cpp中解析tmx文件中<image source="图片路径" <figure="" class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">else if (elementName == &#34;image&#34;)&#10;&#123;&#10;    TMXTilesetInfo* tileset = tmxMapInfo-&#62;getTilesets().back();&#10;&#10;    // build full path&#10;    std::string imagename = attributeDict[&#34;source&#34;].asString();&#10;&#10;    if (_TMXFileName.find_last_of(&#34;/&#34;) != string::npos)&#10;    &#123;&#10;        string dir = _TMXFileName.substr(0, _TMXFileName.find_last_of(&#34;/&#34;) + 1);&#10;        tileset-&#62;_sourceImage = dir + imagename;&#10;    &#125;&#10;    else&#10;    &#123;&#10;        tileset-&#62;_sourceImage = _resources + (_resources.size() ? &#34;/&#34; : &#34;&#34;) + imagename;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></image></p>
+<p>这里tmx文件包含路径，就要在内部图片文件前附加此路径。<br><em>处理办法是直接将这个判断除掉，并且内部图片文件直接填写相对于assets的路径，例如assets/img/map/1.png，就直接填img/map/1.png，这个文件名直接传递给AAssetManager_open。</em></p>
+<hr>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h4 id="1-_tmx地块图片文件支持相对路径，但是却没有对-,-此类相对路径符号过滤处理，导致后面android中打开资源失败。">1. tmx地块图片文件支持相对路径，但是却没有对..,.此类相对路径符号过滤处理，导致后面android中打开资源失败。</h4><blo]]>
+    </summary>
+    
+      <category term="cocos2dx" scheme="http://lvshaco.github.io/tags/cocos2dx/"/>
+    
+      <category term="引擎" scheme="http://lvshaco.github.io/categories/%E5%BC%95%E6%93%8E/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[入坑size_t不同平台大小不一]]></title>
+    <link href="http://lvshaco.github.io/2015/07/10/%E5%85%A5%E5%9D%91size_t%E4%B8%8D%E5%90%8C%E5%B9%B3%E5%8F%B0%E5%A4%A7%E5%B0%8F%E4%B8%8D%E4%B8%80/"/>
+    <id>http://lvshaco.github.io/2015/07/10/入坑size_t不同平台大小不一/</id>
+    <published>2015-07-10T12:53:11.000Z</published>
+    <updated>2015-07-10T12:53:11.000Z</updated>
+    <content type="html"><![CDATA[<p>源码加密打包模块，发现fseek调用失败errno为22，折腾了好久。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">size_t offset;&#10;fread(&#38;offset, 4, 1, fp);&#10;fseek(fp, offset, SEEK_SET);&#10;fprintf(stderr, &#34;%d&#34;, (int)offset);</span><br></pre></td></tr></table></figure></p>
+<p>许久不用调试了，直接打印offset并没有超出文件大小，为何会失败。使劲折腾，猛然醒悟，这里offset使用size_t在64位机器为8字节，fread读取4自己，在这里高位为随机值，故offset实际超大。用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">fprintf(stderr, &#34;%ld&#34;, offset);</span><br></pre></td></tr></table></figure></p>
+<p>就会发现。<br>还是使用uint32_t offset为上。<br>这里记录下，给自己敲下脑袋。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>源码加密打包模块，发现fseek调用失败errno为22，折腾了好久。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br>]]>
+    </summary>
+    
+      <category term="C" scheme="http://lvshaco.github.io/tags/C/"/>
+    
+      <category term="平台差异" scheme="http://lvshaco.github.io/tags/%E5%B9%B3%E5%8F%B0%E5%B7%AE%E5%BC%82/"/>
+    
+      <category term="语言" scheme="http://lvshaco.github.io/categories/%E8%AF%AD%E8%A8%80/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[lua中的_ENV]]></title>
+    <link href="http://lvshaco.github.io/2015/07/10/lua%E4%B8%AD%E7%9A%84_ENV/"/>
+    <id>http://lvshaco.github.io/2015/07/10/lua中的_ENV/</id>
+    <published>2015-07-10T12:53:11.000Z</published>
+    <updated>2015-07-10T12:53:11.000Z</updated>
+    <content type="html"><![CDATA[<p>在lua中，至少从5.2开始就不再有全局变量:</p>
+<blockquote>
+<p>当你写a = 1的时候，其实被编译成 _ENV.a = 1</p>
+</blockquote>
+<p>但是一直以为_ENV是全局environment，其实不然，lua手册中说：</p>
+<blockquote>
+<p>every chunk is compiled in the scope of an external local variable called _ENV (see §3.3.2), so _ENV itself is never a global name in a chunk.</p>
+</blockquote>
+<p>这里的external local variable就是upvalue，也就是_ENV是当前chunk的upvalue。</p>
+<blockquote>
+<p>When Lua compiles a chunk, it initializes the value of its _ENV upvalue with the global environment (see load).</p>
+</blockquote>
+<p>当lua编译一个chunk的时候，如果不指定的话，默认使用全局environment初始化它的upvalue _ENV（其实就是引用），它是隐式声明的一个upvalue，看load声明：</p>
+<blockquote>
+<p>load (ld [, source [, mode [, env］])<br>loadfile ([filename [, mode [, env］])</p>
+</blockquote>
+<p>所以_ENV是语法糖，它在lua编译的作为upvalue被隐式声明，并且可以由外部指定。<br>通过下面代码可以验证：</p>
+<h6 id="t-lua">t.lua</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">local _env = &#123;tostring=tostring,print=print, debug=debug&#125; &#10;print (&#34;_ENV = &#34;..tostring(_ENV))                         &#10;print (&#34;_env = &#34;..tostring(_env))                         &#10;local f, err = loadfile(&#34;m.lua&#34;, &#34;bt&#34;, _env)              &#10;assert(f, err)                                            &#10;local m = f(f)                                            &#10;m.test()</span><br></pre></td></tr></table></figure>
+<h6 id="m-lua">m.lua</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">local f = ...                              &#10;local m = &#123;&#125;                               &#10;                                           &#10;function m.test()                          &#10;    local i =1                             &#10;    while true do                          &#10;        local n, v = debug.getupvalue(f, i)&#10;        if not n then                      &#10;            break                                                        &#10;        elseif n == &#34;_ENV&#34; then                &#10;            print (&#34;_ENV = &#34;..tostring(v)) &#10;            break                          &#10;        end                                &#10;        i = i+1                            &#10;    end                                    &#10;end                                        &#10;                                           &#10;return m</span><br></pre></td></tr></table></figure>
+<h6 id="输出">输出</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_ENV = table: 0x132f5f0&#10;_env  = table: 0x1335f90&#10;_ENV = table: 0x1335f90</span><br></pre></td></tr></table></figure>
+<p>查看指令码可以看到SETUPVAL：</p>
+<h6 id="t-lua-1">t.lua</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_ENV = nil</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ luac -l t.lua&#10;main &#60;t.lua:0,0&#62; (3 instructions at 0x245b3c0)&#10;0+ params, 2 slots, 1 upvalue, 0 locals, 0 constants, 0 functions&#10;        1       [47]    LOADNIL         0 0&#10;        2       [47]    SETUPVAL      0 0     ; _ENV&#10;        3       [47]    RETURN          0 1</span><br></pre></td></tr></table></figure>
+<p>ps:<br>全局environment在C Registry(LUA_REGISTRYINDEX):LUA_RIDX_GLOBALS: At this index the registry has the global environment.<br>_G在初始化的时候被复制为全局environment。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<p>在lua中，至少从5.2开始就不再有全局变量:</p>
+<blockquote>
+<p>当你写a = 1的时候，其实被编译成 _ENV.a = 1</p>
+</blockquote>
+<p>但是一直以为_ENV是全局environment，其实不然，lua手册中说：</p>]]>
+    </summary>
+    
+      <category term="lua" scheme="http://lvshaco.github.io/tags/lua/"/>
+    
+      <category term="语言" scheme="http://lvshaco.github.io/categories/%E8%AF%AD%E8%A8%80/"/>
+    
+  </entry>
+  
+</feed>
