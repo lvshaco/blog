@@ -45,6 +45,7 @@
 .article-share-links:after {
   clear: both;
 }
+.article-share-sina,
 .article-share-twitter,
 .article-share-facebook,
 .article-share-pinterest,
@@ -57,6 +58,7 @@
   color: #999;
   text-shadow: 0 1px #fff;
 }
+.article-share-sina:before,
 .article-share-twitter:before,
 .article-share-facebook:before,
 .article-share-pinterest:before,
@@ -72,11 +74,19 @@
   margin-left: -10px;
   text-align: center;
 }
+.article-share-sina:hover,
 .article-share-twitter:hover,
 .article-share-facebook:hover,
 .article-share-pinterest:hover,
 .article-share-google:hover {
   color: #fff;
+}
+.article-share-sina:before {
+  content: "\f18a";
+}
+.article-share-sina:hover {
+  background: #3b5998;
+  text-shadow: 0 1px #2f477a;
 }
 .article-share-twitter:before {
   content: "\f099";
