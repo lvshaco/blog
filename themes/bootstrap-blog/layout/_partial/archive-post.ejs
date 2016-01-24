@@ -1,6 +1,17 @@
 <article class="archive-article archive-type-<%= post.layout %>">
   <header class="archive-article-header">
-    <%- partial('post/title', {class_name: 'archive-article-title'}) %>
-    <%- partial('post/date', {class_name: 'archive-article-date', date_format: 'MMMM Do'}) %>
+	<span class="archive-article-date"> <%= date(post.date, null) %> </span>
+<% if (post.link){ %>
+    <a class="archive-article-title" href="<%- url_for(post.link) %>"
+       target="_blank" itemprop="url"><%= post.title || '(no title)' %></a>
+<% } else { %>
+  <% if (index){ %>
+      <a class="archive-article-title" href="<%- url_for(post.path) %>"><%= post.title || '(no title)' %></a>
+  <% } else { %>
+      <%= post.title || '(no title)' %>
+  <% } %>
+<% } %>
+    <!--<%- partial('post/title', {class_name: 'archive-article-title'}) %>
+    <%- partial('post/date', {class_name: 'archive-article-date', date_format: 'MMMM Do'}) %>-->
   </header>
 </article>
