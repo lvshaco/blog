@@ -3,36 +3,17 @@
 <head>
   <meta charset="utf-8">
   
-  <title>lua中的_ENV | LvShaco Blog</title>
+  <title>Category: 数据库 | LvShaco Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="在lua中，至少从5.2开始就不再有全局变量:
-
-当你写a = 1的时候，其实被编译成 _ENV.a = 1
-
-但是一直以为_ENV是全局environment，其实不然，lua手册中说：
-
-every chunk is compiled in the scope of an external local variable called _ENV (see §3.3.2), so _ENV its">
-<meta property="og:type" content="article">
-<meta property="og:title" content="lua中的_ENV">
-<meta property="og:url" content="http://lvshaco.github.io/2015/07/10/lua中的_ENV/index.html">
+  <meta name="description">
+<meta property="og:type" content="website">
+<meta property="og:title" content="LvShaco Blog">
+<meta property="og:url" content="http://lvshaco.github.io/categories/数据库/index.html">
 <meta property="og:site_name" content="LvShaco Blog">
-<meta property="og:description" content="在lua中，至少从5.2开始就不再有全局变量:
-
-当你写a = 1的时候，其实被编译成 _ENV.a = 1
-
-但是一直以为_ENV是全局environment，其实不然，lua手册中说：
-
-every chunk is compiled in the scope of an external local variable called _ENV (see §3.3.2), so _ENV its">
-<meta property="og:updated_time" content="2015-07-10T12:53:11.000Z">
+<meta property="og:description">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="lua中的_ENV">
-<meta name="twitter:description" content="在lua中，至少从5.2开始就不再有全局变量:
-
-当你写a = 1的时候，其实被编译成 _ENV.a = 1
-
-但是一直以为_ENV是全局environment，其实不然，lua手册中说：
-
-every chunk is compiled in the scope of an external local variable called _ENV (see §3.3.2), so _ENV its">
+<meta name="twitter:title" content="LvShaco Blog">
+<meta name="twitter:description">
   
   
   
@@ -103,97 +84,46 @@ every chunk is compiled in the scope of an external local variable called _ENV (
 
     <div class="row">
         <div class="col-sm-8 blog-main">
-          <article id="post-lua中的_ENV" class="article article-type-post" itemscope itemprop="blogPost">
-
-  <header class="article-header">
-    
+          
   
-    <h1 class="article-title" itemprop="name">
-      lua中的_ENV
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2016" class="archive-year">2016</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <header class="archive-article-header">
+	<span class="archive-article-date"> 2016-03-24 </span>
+
+  
+      <a class="archive-article-title" href="/2016/03/24/mysql的一次优化/">mysql的一次优化</a>
+  
+
+    <!--
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2016/03/24/mysql的一次优化/">mysql的一次优化</a>
     </h1>
   
 
 
-  </header>
-
-  <div class="article-meta">
     <div class="article-datetime">
-  <a href="/2015/07/10/lua中的_ENV/" class="article-date"><time datetime="2015-07-10T12:53:11.000Z" itemprop="datePublished">2015-07-10</time></a>
+  <a href="/2016/03/24/mysql的一次优化/" class="archive-article-date"><time datetime="2016-03-24T05:44:05.000Z" itemprop="datePublished">March 24th</time></a>
 </div>
-
-    
-    
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/语言/">语言</a>
-  </div>
-
-
-  </div>
-  <div class="article-inner">
-
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>在lua中，至少从5.2开始就不再有全局变量:</p>
-<blockquote>
-<p>当你写a = 1的时候，其实被编译成 _ENV.a = 1</p>
-</blockquote>
-<p>但是一直以为_ENV是全局environment，其实不然，lua手册中说：</p>
-<blockquote>
-<p>every chunk is compiled in the scope of an external local variable called _ENV (see §3.3.2), so _ENV itself is never a global name in a chunk.</p>
-</blockquote>
-<p>这里的external local variable就是upvalue，也就是_ENV是当前chunk的upvalue。</p>
-<blockquote>
-<p>When Lua compiles a chunk, it initializes the value of its _ENV upvalue with the global environment (see load).</p>
-</blockquote>
-<p>当lua编译一个chunk的时候，如果不指定的话，默认使用全局environment初始化它的upvalue _ENV（其实就是引用），它是隐式声明的一个upvalue，看load声明：</p>
-<blockquote>
-<p>load (ld [, source [, mode [, env］])<br>loadfile ([filename [, mode [, env］])</p>
-</blockquote>
-<p>所以_ENV是语法糖，它在lua编译的作为upvalue被隐式声明，并且可以由外部指定。<br>通过下面代码可以验证：</p>
-<h6 id="t-lua">t.lua</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">local _env = &#123;tostring=tostring,print=print, debug=debug&#125; &#10;print (&#34;_ENV = &#34;..tostring(_ENV))                         &#10;print (&#34;_env = &#34;..tostring(_env))                         &#10;local f, err = loadfile(&#34;m.lua&#34;, &#34;bt&#34;, _env)              &#10;assert(f, err)                                            &#10;local m = f(f)                                            &#10;m.test()</span><br></pre></td></tr></table></figure>
-<h6 id="m-lua">m.lua</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">local f = ...                              &#10;local m = &#123;&#125;                               &#10;                                           &#10;function m.test()                          &#10;    local i =1                             &#10;    while true do                          &#10;        local n, v = debug.getupvalue(f, i)&#10;        if not n then                      &#10;            break                                                        &#10;        elseif n == &#34;_ENV&#34; then                &#10;            print (&#34;_ENV = &#34;..tostring(v)) &#10;            break                          &#10;        end                                &#10;        i = i+1                            &#10;    end                                    &#10;end                                        &#10;                                           &#10;return m</span><br></pre></td></tr></table></figure>
-<h6 id="输出">输出</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_ENV = table: 0x132f5f0&#10;_env  = table: 0x1335f90&#10;_ENV = table: 0x1335f90</span><br></pre></td></tr></table></figure>
-<p>查看指令码可以看到SETUPVAL：</p>
-<h6 id="t-lua-1">t.lua</h6><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_ENV = nil</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ luac -l t.lua&#10;main &#60;t.lua:0,0&#62; (3 instructions at 0x245b3c0)&#10;0+ params, 2 slots, 1 upvalue, 0 locals, 0 constants, 0 functions&#10;        1       [47]    LOADNIL         0 0&#10;        2       [47]    SETUPVAL      0 0     ; _ENV&#10;        3       [47]    RETURN          0 1</span><br></pre></td></tr></table></figure>
-<p>ps:<br>全局environment在C Registry(LUA_REGISTRYINDEX):LUA_RIDX_GLOBALS: At this index the registry has the global environment.<br>_G在初始化的时候被复制为全局environment。</p>
-
-      
-    </div>
-
-    
-      
-
-    
-
-    <footer class="article-footer">
-      <a data-url="http://lvshaco.github.io/2015/07/10/lua中的_ENV/" data-id="cim5utekf000mgv0ag71jlong" class="article-share-link">
-        <i class="fa fa-share"></i> Share
-      </a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/lua/">lua</a></li></ul>
-
-
-    </footer>
-  </div>
-  
-    
-<ul id="article-nav" class="nav nav-pills nav-justified">
-  
-  
-  <li role="presentation">
-    <a href="/2015/07/10/入坑size_t不同平台大小不一/" id="article-nav-newer" class="article-nav-link-wrap">
-      <span class="article-nav-link-title">入坑size_t不同平台大小不一</span>
-      <i class="fa fa-chevron-right pull-right"></i>
-    </a>
-  </li>
-  
-</ul>
-
-
-  
+-->
+  </header>
 </article>
+
+  
+  
+    </div></section>
+  
 
 
 
