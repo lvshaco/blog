@@ -3,27 +3,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>cocos2dx中的坑 | LvShaco Blog</title>
+  <title>Hello World | LvShaco Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1. tmx地块图片文件支持相对路径，但是却没有对..,.此类相对路径符号过滤处理，导致后面android中打开资源失败。
-注意 AAssetManager_open中打开的文件必须是相对于assets的绝对路径，不能包含..，.符号，AAssetManager_open内部实现会在此路径前附加assets/，并且使用字符串完全匹配，即使是/改为\也跪。
-
-代码：CTMXXMLParser.cpp">
+  <meta name="description" content="this is description">
 <meta property="og:type" content="article">
-<meta property="og:title" content="cocos2dx中的坑">
-<meta property="og:url" content="http://lvshaco.github.io/2015/07/10/cocos2dx中的坑/index.html">
+<meta property="og:title" content="Hello World">
+<meta property="og:url" content="http://lvshaco.github.io/2016/01/24/hello-world/index.html">
 <meta property="og:site_name" content="LvShaco Blog">
-<meta property="og:description" content="1. tmx地块图片文件支持相对路径，但是却没有对..,.此类相对路径符号过滤处理，导致后面android中打开资源失败。
-注意 AAssetManager_open中打开的文件必须是相对于assets的绝对路径，不能包含..，.符号，AAssetManager_open内部实现会在此路径前附加assets/，并且使用字符串完全匹配，即使是/改为\也跪。
-
-代码：CTMXXMLParser.cpp">
-<meta property="og:updated_time" content="2015-07-10T12:53:11.000Z">
+<meta property="og:description" content="this is description">
+<meta property="og:updated_time" content="2016-01-24T13:32:15.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="cocos2dx中的坑">
-<meta name="twitter:description" content="1. tmx地块图片文件支持相对路径，但是却没有对..,.此类相对路径符号过滤处理，导致后面android中打开资源失败。
-注意 AAssetManager_open中打开的文件必须是相对于assets的绝对路径，不能包含..，.符号，AAssetManager_open内部实现会在此路径前附加assets/，并且使用字符串完全匹配，即使是/改为\也跪。
-
-代码：CTMXXMLParser.cpp">
+<meta name="twitter:title" content="Hello World">
+<meta name="twitter:description" content="this is description">
   
   
   
@@ -94,13 +85,13 @@
 
     <div class="row">
         <div class="col-sm-8 blog-main">
-          <article id="post-cocos2dx中的坑" class="article article-type-post" itemscope itemprop="blogPost">
+          <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
 
   <header class="article-header">
     
   
     <h1 class="article-title" itemprop="name">
-      cocos2dx中的坑
+      Hello World
     </h1>
   
 
@@ -109,27 +100,26 @@
 
   <div class="article-meta">
     <div class="article-datetime">
-  <a href="/2015/07/10/cocos2dx中的坑/" class="article-date"><time datetime="2015-07-10T12:53:11.000Z" itemprop="datePublished">2015-07-10</time></a>
+  <a href="/2016/01/24/hello-world/" class="article-date"><time datetime="2016-01-24T13:32:15.000Z" itemprop="datePublished">2016-01-24</time></a>
 </div>
 
     
     
-  <div class="article-category">
-    <a class="article-category-link" href="/categories/引擎/">引擎</a>
-  </div>
-
 
   </div>
   <div class="article-inner">
 
     <div class="article-entry" itemprop="articleBody">
       
-        <h4 id="1-_tmx地块图片文件支持相对路径，但是却没有对-,-此类相对路径符号过滤处理，导致后面android中打开资源失败。">1. tmx地块图片文件支持相对路径，但是却没有对..,.此类相对路径符号过滤处理，导致后面android中打开资源失败。</h4><blockquote>
-<p>注意 AAssetManager_open中打开的文件必须是相对于assets的绝对路径，不能包含..，.符号，AAssetManager_open内部实现会在此路径前附加assets/，并且使用字符串完全匹配，即使是/改为\也跪。</p>
-</blockquote>
-<p>代码：CTMXXMLParser.cpp中解析tmx文件中<image source="图片路径" <figure="" class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">else if (elementName == &#34;image&#34;)&#10;&#123;&#10;    TMXTilesetInfo* tileset = tmxMapInfo-&#62;getTilesets().back();&#10;&#10;    // build full path&#10;    std::string imagename = attributeDict[&#34;source&#34;].asString();&#10;&#10;    if (_TMXFileName.find_last_of(&#34;/&#34;) != string::npos)&#10;    &#123;&#10;        string dir = _TMXFileName.substr(0, _TMXFileName.find_last_of(&#34;/&#34;) + 1);&#10;        tileset-&#62;_sourceImage = dir + imagename;&#10;    &#125;&#10;    else&#10;    &#123;&#10;        tileset-&#62;_sourceImage = _resources + (_resources.size() ? &#34;/&#34; : &#34;&#34;) + imagename;&#10;    &#125;&#10;&#125;</span><br></pre></td></tr></table></image></p>
-<p>这里tmx文件包含路径，就要在内部图片文件前附加此路径。<br><em>处理办法是直接将这个判断除掉，并且内部图片文件直接填写相对于assets的路径，例如assets/img/map/1.png，就直接填img/map/1.png，这个文件名直接传递给AAssetManager_open。</em></p>
-<hr>
+        <p>Welcome to <a href="http://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="http://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="http://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
+<h2 id="Quick_Start">Quick Start</h2><h3 id="Create_a_new_post">Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
+<h3 id="Run_server">Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
+<h3 id="Generate_static_files">Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
+<h3 id="Deploy_to_remote_sites">Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="http://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
 
       
     </div>
@@ -140,13 +130,11 @@
     
 
     <footer class="article-footer">
-      <a data-url="http://lvshaco.github.io/2015/07/10/cocos2dx中的坑/" data-id="cim5umhh10000fs0ad38n7f1b" class="article-share-link">
+      <a data-url="http://lvshaco.github.io/2016/01/24/hello-world/" data-id="cim5umhia000mfs0abzq98740" class="article-share-link">
         <i class="fa fa-share"></i> Share
       </a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/cocos2dx/">cocos2dx</a></li></ul>
-
 
     </footer>
   </div>
@@ -155,16 +143,16 @@
 <ul id="article-nav" class="nav nav-pills nav-justified">
   
   <li role="presentation">
-    <a href="/2015/07/10/入坑size_t不同平台大小不一/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2015/07/17/vim清扫/" id="article-nav-older" class="article-nav-link-wrap">
       <i class="fa fa-chevron-left pull-left"></i>
-      <span class="article-nav-link-title">入坑size_t不同平台大小不一</span>
+      <span class="article-nav-link-title">vim清扫</span>
     </a>
   </li>
   
   
   <li role="presentation">
-    <a href="/2015/07/17/vim清扫/" id="article-nav-newer" class="article-nav-link-wrap">
-      <span class="article-nav-link-title">vim清扫</span>
+    <a href="/2016/03/24/mysql的一次优化/" id="article-nav-newer" class="article-nav-link-wrap">
+      <span class="article-nav-link-title">mysql的一次优化</span>
       <i class="fa fa-chevron-right pull-right"></i>
     </a>
   </li>
