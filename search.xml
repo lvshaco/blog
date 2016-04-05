@@ -88,7 +88,7 @@
 <p>对比一下就可以得到有意义的数据</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">wr_sec/s：差距巨大</span><br><span class="line">avgqu-sz：几乎为<span class="number">1</span>，本身说明io请求就是一个接着一个，很快联想到innodb的一个重要参数</span><br><span class="line">innodb_flush_<span class="built_in">log</span>_at_trx_commit 默认设置的是<span class="number">1</span> 也就是同步刷新<span class="built_in">log</span></span><br><span class="line">avgrq-sz：相比较小（同步的话，每次数据io很小）</span><br><span class="line">await：相比较短（同步的话，就不用再队列中等待了）</span><br><span class="line">svctm：相比较长（因为不包括队列中时间，同步的话就显长了）</span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql &gt; <span class="built_in">set</span> global innodb_flush_<span class="built_in">log</span>_at_trx_commit=<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
-<p>一切就顺滑如飞了</p>
+<p>一切就顺滑如飞了<br>ps: 务必在/etc/my.cnf ［mysqld]下面添加否则重启实效。</p>
 <p>参考：</p>
 <p><a href="http://imysql.com/2016/01/13/mysql-optimization-case-howto-find-performance-bottleneck.shtml" target="_blank" rel="external">优化系列 | 实例解析MySQL性能瓶颈排查定位</a></p>
 <p><a href="http://xstarcd.github.io/wiki/MySQL/mysqlslap.html" target="_blank" rel="external">MySQL自带的性能压力测试工具mysqlslap</a></p>

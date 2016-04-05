@@ -4,7 +4,7 @@
   <subtitle><![CDATA[程序员与游戏]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://lvshaco.github.io/"/>
-  <updated>2016-04-05T03:06:08.000Z</updated>
+  <updated>2016-04-05T03:21:42.000Z</updated>
   <id>http://lvshaco.github.io/</id>
   
   <author>
@@ -18,8 +18,8 @@
     <title><![CDATA[mysql的一次优化]]></title>
     <link href="http://lvshaco.github.io/2016/04/05/mysql%E7%9A%84%E4%B8%80%E6%AC%A1%E4%BC%98%E5%8C%96/"/>
     <id>http://lvshaco.github.io/2016/04/05/mysql的一次优化/</id>
-    <published>2016-04-05T03:06:08.000Z</published>
-    <updated>2016-04-05T03:06:08.000Z</updated>
+    <published>2016-04-05T03:21:42.000Z</published>
+    <updated>2016-04-05T03:21:42.000Z</updated>
     <content type="html"><![CDATA[<h3 id="背景">背景</h3><p>服务器在我自己的macpro上登录是没有压力的，1000人登录完成大概在5左右，登录创建大概是8秒，基本达标。但是转移到外网压力测试机器上创建登录却达到了好几分钟，看日志一直可以以正常的速度看到save日志（保存到数据库）。后面也可以看到，一但全部1000人正常创建后，下次1000人登录在4秒以内。</p>
 <h3 id="数据库版本">数据库版本</h3><p>一开始我对比了数据库版本，mac下时5.6，linux是5.1.7 (centos 6.7 final)。网上查了下版本对比，性能是有提升，20%，但不至于差那么多。不管怎样先升级再说，至少可以对比下配置。升级完后，查看了几个比较关键的参数，都是默认的一样。</p>
 <h3 id="压力测试对比">压力测试对比</h3><p>mysqlslap：mysql自带的工具压力测试</p>
@@ -102,7 +102,7 @@
 <p>对比一下就可以得到有意义的数据</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">wr_sec/s：差距巨大</span><br><span class="line">avgqu-sz：几乎为<span class="number">1</span>，本身说明io请求就是一个接着一个，很快联想到innodb的一个重要参数</span><br><span class="line">innodb_flush_<span class="built_in">log</span>_at_trx_commit 默认设置的是<span class="number">1</span> 也就是同步刷新<span class="built_in">log</span></span><br><span class="line">avgrq-sz：相比较小（同步的话，每次数据io很小）</span><br><span class="line">await：相比较短（同步的话，就不用再队列中等待了）</span><br><span class="line">svctm：相比较长（因为不包括队列中时间，同步的话就显长了）</span><br></pre></td></tr></table></figure>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql &gt; <span class="built_in">set</span> global innodb_flush_<span class="built_in">log</span>_at_trx_commit=<span class="number">2</span>;</span><br></pre></td></tr></table></figure>
-<p>一切就顺滑如飞了</p>
+<p>一切就顺滑如飞了<br>ps: 务必在/etc/my.cnf ［mysqld]下面添加否则重启实效。</p>
 <p>参考：</p>
 <p><a href="http://imysql.com/2016/01/13/mysql-optimization-case-howto-find-performance-bottleneck.shtml" target="_blank" rel="external">优化系列 | 实例解析MySQL性能瓶颈排查定位</a></p>
 <p><a href="http://xstarcd.github.io/wiki/MySQL/mysqlslap.html" target="_blank" rel="external">MySQL自带的性能压力测试工具mysqlslap</a></p>
