@@ -4,6 +4,15 @@
   
     
     <entry>
+      <title><![CDATA[osX Yosemite (10.10.3) 上安装valgrind]]></title>
+      <url>http://lvshaco.github.io/2016/04/07/osX%20Yosemite%20(10.10.3)%20%E4%B8%8A%E5%AE%89%E8%A3%85valgrind/</url>
+      <content type="html"><![CDATA[<h3 id="brew_安装出错">brew 安装出错</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">brew install valgrind&#10;valgrind: OS X Mavericks or older is required.&#10;Error: An unsatisfied requirement failed this build.</span><br></pre></td></tr></table></figure>
+<h3 id="从源码安装">从源码安装</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">svn co svn://svn.valgrind.org/valgrind/trunk valgrind&#10;cd valgrind&#10;./autogen.sh&#10;./configure --prefix=/usr/local&#10;make &#38;&#38; make install</span><br></pre></td></tr></table></figure>
+<h3 id="从源码安装需要解决的问题">从源码安装需要解决的问题</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ld: cannot found  -lgcc_s.10.5&#10;&#10;# &#26597;&#25214;&#27492;&#21160;&#24577;&#24211;&#30340;&#36335;&#24452;&#10;sudo find / -iname libgcc_s.10.5.dylib &#10;# &#23558;&#25214;&#21040;&#30340;&#36335;&#24452;&#21152;&#20837;&#32534;&#35793;&#26102;&#21160;&#24577;&#24211;&#26597;&#25214;&#36335;&#24452;&#10;export LIBRARY_PATH=&#34;/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk/usr/lib/&#34;</span><br></pre></td></tr></table></figure>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[mysql的一次优化]]></title>
       <url>http://lvshaco.github.io/2016/04/05/mysql%E7%9A%84%E4%B8%80%E6%AC%A1%E4%BC%98%E5%8C%96/</url>
       <content type="html"><![CDATA[<h3 id="背景">背景</h3><p>服务器在我自己的macpro上登录是没有压力的，1000人登录完成大概在5左右，登录创建大概是8秒，基本达标。但是转移到外网压力测试机器上创建登录却达到了好几分钟，看日志一直可以以正常的速度看到save日志（保存到数据库）。后面也可以看到，一但全部1000人正常创建后，下次1000人登录在4秒以内。</p>
