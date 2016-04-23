@@ -2,6 +2,11 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://lvshaco.github.io/about/index.html</loc>
+    <lastmod>2016-04-23T04:14:59.000Z</lastmod>
+  </url>
+  
+  <url>
     <loc>http://lvshaco.github.io/2016/04/23/cocos2dx%E4%B8%AD%E7%9A%84%E5%9D%91/</loc>
     <lastmod>2016-04-22T16:16:40.000Z</lastmod>
   </url>
