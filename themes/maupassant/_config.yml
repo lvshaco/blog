@@ -18,10 +18,13 @@ menu:
   - page: archive
     directory: archives/
     icon: fa-archive
-  - page: about
-    directory: about/
-    icon: fa-user
-  - page: rss
+  - page:
+    directory: http://www.github.com/lvshaco
+    icon: fa-github
+  - page:
+    directory: http://weibo.com/u/1836638344
+    icon: fa-weibo
+  - page:
     directory: atom.xml
     icon: fa-rss
 
@@ -31,22 +34,12 @@ widgets: ## Six widgets in sidebar provided: search, category, tag, recent_posts
   - tag
   - recent_posts
   - recent_comments
-  - links
+#  - links
 
 search:
   path: search.xml
+  field: post
 
-
-links:
-  - title: "My Github"
-    url: http://www.github.com/lvshaco
-    icon: fa-github
-  - title: "My sina weibo"
-    url: http://weibo.com/u/1836638344
-    icon: "fa fa-weibo"
-  - title: "RSS Feed"
-    url: atom.xml
-    icon: "fa fa-rss"
 #links:
 #  - title: 
 #    url: http://www.example1.com/
