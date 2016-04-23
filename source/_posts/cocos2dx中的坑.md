@@ -6,7 +6,8 @@ tags: [cocos2dx]
 >注意 AAssetManager_open中打开的文件必须是相对于assets的绝对路径，不能包含..，.符号，AAssetManager_open内部实现会在此路径前附加assets/，并且使用字符串完全匹配，即使是/改为\也跪。
 
 代码：CTMXXMLParser.cpp中解析tmx文件中<image source="图片路径"
-``` 
+
+```
 else if (elementName == "image")
 {
     TMXTilesetInfo* tileset = tmxMapInfo->getTilesets().back();
