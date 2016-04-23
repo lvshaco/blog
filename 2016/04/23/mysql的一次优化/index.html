@@ -1,0 +1,93 @@
+<!DOCTYPE html><html lang="null"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport"><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="telephone=no" name="format-detection"><meta name="description"><title>mysql的一次优化 | LvShaco Blog</title><link rel="stylesheet" type="text/css" href="/css/style.css?v=0.0.0"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/normalize/3.0.3/normalize.min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/pure-min.css"><link rel="stylesheet" type="text/css" href="//cdn.bootcss.com/pure/0.6.0/grids-responsive-min.css"><link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.5.0/css/font-awesome.min.css"><script type="text/javascript" src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script><link rel="Shortcut Icon" type="image/x-icon" href="/favicon.ico"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="apple-touch-icon-precomposed" href="/apple-touch-icon.png"><link rel="alternate" type="application/atom+xml" href="/atom.xml"></head><body><div class="body_container"><div id="header"><div class="site-name"><h1 class="hidden">mysql的一次优化</h1><a id="logo" href="/.">LvShaco Blog</a><p class="description">程序员与游戏</p></div><div id="nav-menu"><a href="/." class="current"><i class="fa fa-home"> 首頁</i></a><a href="/archives/"><i class="fa fa-archive"> 所有文章</i></a><a href="/about/"><i class="fa fa-user"> 關於</i></a><a href="/atom.xml"><i class="fa fa-rss"> 訂閱</i></a></div></div><div id="layout" class="pure-g"><div class="pure-u-1 pure-u-md-3-4"><div class="content_container"><div class="post"><h1 class="post-title">mysql的一次优化</h1><div class="post-meta">Apr 23, 2016<span> | </span><span class="category"><a href="/categories/数据库/">数据库</a></span><script src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js" async></script><span id="busuanzi_container_page_pv"> | <span id="busuanzi_value_page_pv"></span><span> Hits</span></span></div><div class="post-content"><h3 id="背景">背景</h3><p>服务器在我自己的macpro上登录是没有压力的，1000人登录完成大概在5左右，登录创建大概是8秒，基本达标。但是转移到外网压力测试机器上创建登录却达到了好几分钟，看日志一直可以以正常的速度看到save日志（保存到数据库）。后面也可以看到，一但全部1000人正常创建后，下次1000人登录在4秒以内。</p>
+<h3 id="数据库版本">数据库版本</h3><p>一开始我对比了数据库版本，mac下时5.6，linux是5.1.7 (centos 6.7 final)。网上查了下版本对比，性能是有提升，20%，但不至于差那么多。不管怎样先升级再说，至少可以对比下配置。升级完后，查看了几个比较关键的参数，都是默认的一样。</p>
+<h3 id="压力测试对比">压力测试对比</h3><p>mysqlslap：mysql自带的工具压力测试</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqlslap -a --engine=myisam,innodb --auto-generate-sql-load-type=read&#10;--number-of-queries 1000 --iterations=5 -uroot -people</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>read</th>
+<th style="text-align:right">myisam</th>
+<th style="text-align:center">innodb</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>macpro</td>
+<td style="text-align:right">0.08</td>
+<td style="text-align:center">0.1</td>
+</tr>
+<tr>
+<td>linux</td>
+<td style="text-align:right">0.15</td>
+<td style="text-align:center">0.2</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqlslap -a --engine=myisam,innodb --auto-generate-sql-load-type=write&#10;--number-of-queries 1000 --iterations=5 -uroot -people</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>write</th>
+<th style="text-align:right">myisam</th>
+<th style="text-align:center">innodb</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>macpro</td>
+<td style="text-align:right">0.04</td>
+<td style="text-align:center">0.1</td>
+</tr>
+<tr>
+<td>linux</td>
+<td style="text-align:right">0.03</td>
+<td style="text-align:center">50</td>
+</tr>
+</tbody>
+</table>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysqlslap -a --engine=myisam,innodb --auto-generate-sql-load-type=update&#10;--number-of-queries 1000 --iterations=5 -uroot -people</span><br></pre></td></tr></table></figure>
+<table>
+<thead>
+<tr>
+<th>update</th>
+<th style="text-align:right">myisam</th>
+<th style="text-align:center">innodb</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>macpro</td>
+<td style="text-align:right">0.5</td>
+<td style="text-align:center">0.1</td>
+</tr>
+<tr>
+<td>linux</td>
+<td style="text-align:right">0.3</td>
+<td style="text-align:center">50</td>
+</tr>
+</tbody>
+</table>
+<p>innodb在写操作达到惊人的500倍数。。。又对比了下双方innodb的一些关键参数，一样。你tm在逗我，这不会是磁盘坏的吧。。。</p>
+<h3 id="磁盘io读写测试">磁盘io读写测试</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#65283; &#20889;&#25991;&#20214;&#21040;&#24403;&#21069;&#30446;&#24405;&#10;time dd if=/dev/zero of=10Gb.file bs=1024 count=10000000&#10;&#65283; &#20174;&#24403;&#21069;&#30446;&#24405;10Gb.file&#35835;&#21462;&#10;time dd if=10Gb.file bs=64k |dd of=/dev/null&#10;&#65283; sar&#35266;&#23519;&#30913;&#30424;io&#10;sar -d 1 -p</span><br></pre></td></tr></table></figure>
+<p>写的观察结果如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">      &#9;&#9;DEV       tps  rd_sec/s  wr_sec/s  avgrq-sz  avgqu-sz     await     svctm     %util&#10;      &#9;&#9;sda     405.56     0.00    415288.89     1024      158.71     395.91     2.74     111.11&#10;VolGroup-lv_root    54613.33   0.00    436906.73      8.00      20311.46   376.25     0.02     111.11&#10;VolGroup-lv_swap    0.00     0.00      0.00      0.00      0.00      &#9;0.00      0.00      0.00&#10;VolGroup-lv_home    0.00      0.00      0.00      0.00      0.00      0.00       0.00      0.00</span><br></pre></td></tr></table></figure>
+<p>之后又到mysql的data目录测试也是一样很快，看来不是磁盘坏了，呵呵</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql&#62; show variables like &#34;%dir%&#34;;&#10;datadir &#65372; /var/lib/mysql/</span><br></pre></td></tr></table></figure>
+<p>再看看用mysqlslap写时候的数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">      &#9;&#9;DEV       tps  rd_sec/s  wr_sec/s  avgrq-sz  avgqu-sz     await     svctm     %util&#10;      &#9;&#9;sda     126.26      0.00    824.24     6.53      1.01     8.02     7.97     100.61&#10;VolGroup-lv_root     103.03      0.00    824.24      8.00      1.01      9.82      9.76     100.61&#10;VolGroup-lv_swap      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00&#10;VolGroup-lv_home      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00</span><br></pre></td></tr></table></figure>
+<p>sar结果具体参数网摘如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#21442;&#25968;-p&#21487;&#20197;&#25171;&#21360;&#20986;sda,hdc&#31561;&#30913;&#30424;&#35774;&#22791;&#21517;&#31216;,&#22914;&#26524;&#19981;&#29992;&#21442;&#25968;-p,&#35774;&#22791;&#33410;&#28857;&#21017;&#26377;&#21487;&#33021;&#26159;dev8-0,dev22-0&#10;&#10;tps:&#27599;&#31186;&#20174;&#29289;&#29702;&#30913;&#30424;I/O&#30340;&#27425;&#25968;.&#22810;&#20010;&#36923;&#36753;&#35831;&#27714;&#20250;&#34987;&#21512;&#24182;&#20026;&#19968;&#20010;I/O&#30913;&#30424;&#35831;&#27714;,&#19968;&#27425;&#20256;&#36755;&#30340;&#22823;&#23567;&#26159;&#19981;&#30830;&#23450;&#30340;.&#10;rd_sec/s:&#27599;&#31186;&#35835;&#25159;&#21306;&#30340;&#27425;&#25968;.&#10;&#10;wr_sec/s:&#27599;&#31186;&#20889;&#25159;&#21306;&#30340;&#27425;&#25968;.&#10;&#10;avgrq-sz:&#24179;&#22343;&#27599;&#27425;&#35774;&#22791;I/O&#25805;&#20316;&#30340;&#25968;&#25454;&#22823;&#23567;(&#25159;&#21306;).&#10;&#10;avgqu-sz:&#30913;&#30424;&#35831;&#27714;&#38431;&#21015;&#30340;&#24179;&#22343;&#38271;&#24230;.&#10;&#10;await:&#20174;&#35831;&#27714;&#30913;&#30424;&#25805;&#20316;&#21040;&#31995;&#32479;&#23436;&#25104;&#22788;&#29702;,&#27599;&#27425;&#35831;&#27714;&#30340;&#24179;&#22343;&#28040;&#32791;&#26102;&#38388;,&#21253;&#25324;&#35831;&#27714;&#38431;&#21015;&#31561;&#24453;&#26102;&#38388;,&#21333;&#20301;&#26159;&#27627;&#31186;(1&#31186;=1000&#27627;&#31186;).&#10;&#10;svctm:&#31995;&#32479;&#22788;&#29702;&#27599;&#27425;&#35831;&#27714;&#30340;&#24179;&#22343;&#26102;&#38388;,&#19981;&#21253;&#25324;&#22312;&#35831;&#27714;&#38431;&#21015;&#20013;&#28040;&#32791;&#30340;&#26102;&#38388;.&#10;&#10;%util:I/O&#35831;&#27714;&#21344;CPU&#30340;&#30334;&#20998;&#27604;,&#27604;&#29575;&#36234;&#22823;,&#35828;&#26126;&#36234;&#39281;&#21644;.</span><br></pre></td></tr></table></figure>
+<p>对比一下就可以得到有意义的数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wr_sec/s&#65306;&#24046;&#36317;&#24040;&#22823;&#10;avgqu-sz&#65306;&#20960;&#20046;&#20026;1&#65292;&#26412;&#36523;&#35828;&#26126;io&#35831;&#27714;&#23601;&#26159;&#19968;&#20010;&#25509;&#30528;&#19968;&#20010;&#65292;&#24456;&#24555;&#32852;&#24819;&#21040;innodb&#30340;&#19968;&#20010;&#37325;&#35201;&#21442;&#25968;&#10;innodb_flush_log_at_trx_commit &#40664;&#35748;&#35774;&#32622;&#30340;&#26159;1 &#20063;&#23601;&#26159;&#21516;&#27493;&#21047;&#26032;log&#10;avgrq-sz&#65306;&#30456;&#27604;&#36739;&#23567;&#65288;&#21516;&#27493;&#30340;&#35805;&#65292;&#27599;&#27425;&#25968;&#25454;io&#24456;&#23567;&#65289;&#10;await&#65306;&#30456;&#27604;&#36739;&#30701;&#65288;&#21516;&#27493;&#30340;&#35805;&#65292;&#23601;&#19981;&#29992;&#20877;&#38431;&#21015;&#20013;&#31561;&#24453;&#20102;&#65289;&#10;svctm&#65306;&#30456;&#27604;&#36739;&#38271;&#65288;&#22240;&#20026;&#19981;&#21253;&#25324;&#38431;&#21015;&#20013;&#26102;&#38388;&#65292;&#21516;&#27493;&#30340;&#35805;&#23601;&#26174;&#38271;&#20102;&#65289;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mysql &#62; set global innodb_flush_log_at_trx_commit=2;</span><br></pre></td></tr></table></figure>
+<p>一切就顺滑如飞了<br>ps: 务必在/etc/my.cnf ［mysqld]下面添加否则重启实效。</p>
+<p>参考：</p>
+<p><a href="http://imysql.com/2016/01/13/mysql-optimization-case-howto-find-performance-bottleneck.shtml" target="_blank" rel="external">优化系列 | 实例解析MySQL性能瓶颈排查定位</a></p>
+<p><a href="http://xstarcd.github.io/wiki/MySQL/mysqlslap.html" target="_blank" rel="external">MySQL自带的性能压力测试工具mysqlslap</a></p>
+</div><script type="text/javascript" src="/js/share.js?v=0.0.0" async></script><a data-url="http://lvshaco.github.io/2016/04/23/mysql的一次优化/" data-id="cincmduaj000lk20a01pp47l8" class="article-share-link">分享至</a><div class="tags"><a href="/tags/mysql/">mysql</a></div><div class="post-nav"><a href="/2016/04/23/cocos2dx中的坑/" class="pre">cocos2dx中的坑</a><a href="/2016/04/07/osX Yosemite (10.10.3) 上安装valgrind/" class="next">osX Yosemite (10.10.3) 上安装valgrind</a></div></div></div></div><div class="pure-u-1-4"><div id="sidebar"><div class="widget"><div class="search-form"><input id="local-search-input" placeholder="Search" type="text" name="q" results="0"/><div id="local-search-result"></div></div></div><div class="widget"><div class="widget-title"><i class="fa fa-folder-o"> 分類</i></div><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/tool/">tool</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/引擎/">引擎</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/语言/">语言</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-star-o"> 標籤</i></div><div class="tagcloud"><a href="/tags/cocos2dx/" style="font-size: 15px;">cocos2dx</a> <a href="/tags/C/" style="font-size: 15px;">C</a> <a href="/tags/平台差异/" style="font-size: 15px;">平台差异</a> <a href="/tags/vim/" style="font-size: 15px;">vim</a> <a href="/tags/tool/" style="font-size: 15px;">tool</a> <a href="/tags/mysql/" style="font-size: 15px;">mysql</a> <a href="/tags/lua/" style="font-size: 15px;">lua</a></div></div><div class="widget"><div class="widget-title"><i class="fa fa-file-o"> 最新文章</i></div><ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/04/23/cocos2dx中的坑/">cocos2dx中的坑</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/23/mysql的一次优化/">mysql的一次优化</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/07/osX Yosemite (10.10.3) 上安装valgrind/">osX Yosemite (10.10.3) 上安装valgrind</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/01/24/hello-world/">Hello World</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/07/17/vim清扫/">vim清扫</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/07/10/入坑size_t不同平台大小不一/">入坑size_t不同平台大小不一</a></li><li class="post-list-item"><a class="post-list-link" href="/2015/07/10/lua中的_ENV/">lua中的_ENV</a></li></ul></div><div class="widget"><div class="widget-title"><i class="fa fa-external-link"> 友站連結</i></div><ul></ul><a href="http://www.github.com/lvshaco" title="My Github" target="_blank">My Github</a><ul></ul><a href="http://weibo.com/u/1836638344" title="My sina weibo" target="_blank">My sina weibo</a><ul></ul><a href="atom.xml" title="RSS Feed" target="_blank">RSS Feed</a></div></div></div><div class="pure-u-1 pure-u-md-3-4"><div id="footer">© <a href="/." rel="nofollow">LvShaco Blog.</a> Powered by<a rel="nofollow" target="_blank" href="https://hexo.io"> Hexo.</a><a rel="nofollow" target="_blank" href="https://github.com/tufu9441/maupassant-hexo"> Theme</a> by<a rel="nofollow" target="_blank" href="https://github.com/pagecho"> Cho.</a></div></div></div><a id="rocket" href="#top" class="show"></a><script type="text/javascript" src="/js/totop.js?v=0.0.0" async></script><script type="text/javascript" src="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.pack.js" async></script><script type="text/javascript" src="/js/fancybox.js?v=0.0.0" async></script><link rel="stylesheet" type="text/css" href="/css/jquery.fancybox.css?v=0.0.0"><script type="text/javascript" src="/js/search.js?v=0.0.0"></script><script>var search_path = 'search.xml';
+if (search_path.length == 0) {
+   search_path = 'search.xml';
+}
+var path = '/' + search_path;
+searchFunc(path, 'local-search-input', 'local-search-result');
+</script><script type="text/javascript" src="/js/codeblock-resizer.js?v=0.0.0"></script><script type="text/javascript" src="/js/smartresize.js?v=0.0.0"></script></div></body></html>

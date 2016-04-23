@@ -1,6 +1,6 @@
 (function($){
 
-  // Share
+  // article-share
   $('body').on('click', function(){
     $('.article-share-box.on').removeClass('on');
   }).on('click', '.article-share-link', function(e){
@@ -10,6 +10,7 @@
       url = $this.attr('data-url'),
       encodedUrl = encodeURIComponent(url),
       id = 'article-share-box-' + $this.attr('data-id'),
+      title = document.title,
       offset = $this.offset();
 
     if ($('#' + id).length){
@@ -24,11 +25,10 @@
         '<div id="' + id + '" class="article-share-box">',
           '<input class="article-share-input" value="' + url + '">',
           '<div class="article-share-links">',
-            '<a href="http://service.weibo.com/share/share.php?&title=' + encodedUrl + '" class="article-share-sina" target="_blank" title="微博"></a>',
-            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter111"></a>',
+            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
             '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
-            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="article-share-pinterest" target="_blank" title="Pinterest"></a>',
-            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="article-share-google" target="_blank" title="Google+"></a>',
+            '<a href="http://service.weibo.com/share/share.php?title=' + title + '&url=' + encodedUrl + '&searchPic=true&style=number' + '" class="article-share-weibo" target="_blank" title="Weibo"></a>',
+            '<a href="http://s.jiathis.com/qrcode.php?url=' + encodedUrl + '" class="article-share-wechat" target="_blank" title="Wechat"></a>',
           '</div>',
         '</div>'
       ].join('');
@@ -54,33 +54,5 @@
 
     window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
   });
-
-  // Caption
-  $('.article-entry').each(function(i){
-    $(this).find('img').each(function(){
-      if ($(this).parent().hasClass('image-link')) return;
-
-      var alt = this.alt;
-      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
-
-      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="image-link"></a>');
-    });
-
-    $(this).find('.image-link').each(function(){
-      $(this).attr('rel', 'article' + i);
-    });
-  });
-
-  // Bootstrap table style
-  $('.article-entry table').each(function(i, table)  {
-    if ($(this).parent().hasClass('table-responsive')) return;
-    $(this).addClass('table');
-    $(this).wrap('<div class="table-responsive"></div>');
-  });
-
-  // Lightbox plugin
-  if ($.fancybox){
-    $('.image-link').fancybox();
-  }
 
 })(jQuery);
